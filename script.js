@@ -4,7 +4,7 @@
   // Supabase Dashboard의 Connect 또는 Settings > API Keys에서 확인한 값을 넣으세요.
   // 브라우저에는 Publishable Key(권장) 또는 기존 anon public key만 사용합니다.
   const SUPABASE_URL = 'https://hjvnqkpvzeiszitxkzbi.supabase.co';
-  const SUPABASE_PUBLIC_KEY = 'PUBLISHABLE_KEY=sb_publishable_Ljek2NbI7M8qL0mauw_IeQ_xeMB3CCt';
+  const SUPABASE_PUBLIC_KEY = 'sb_publishable_Ljek2NbI7M8qL0mauw_IeQ_xeMB3CCt';
 
   const MIN_SUBMIT_INTERVAL_MS = 60 * 1000;
   const MIN_FORM_FILL_TIME_MS = 2500;
