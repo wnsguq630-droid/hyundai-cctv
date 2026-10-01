@@ -1,0 +1,69 @@
+현대CCTV Firebase 연결본
+
+수정 파일
+- index.html: 기존 디자인 유지, 필수 항목과 창고/카메라 수 선택지 보완, body 끝에 module 방식 script.js 연결.
+- script.js: 기존 Supabase 전송 제거, Firebase SDK 12.19.0 CDN 모듈 사용.
+- firestore.rules: 익명 create만 허용. 필수 키/허용 키, 문자열 길이, 전화번호, 선택값, 동의, status, 서버 시각 검사.
+- 기존 Supabase 안내와 SQL은 배포본에서 제거했습니다.
+
+반드시 적용할 Firebase 설정
+1. Firebase 콘솔에서 hyundai-cctv-24280 프로젝트 선택.
+2. Firestore Database > (default) > Rules 탭 열기.
+3. firestore.rules 파일 전체 내용을 붙여 넣고 게시.
+4. 규칙 게시 후 배포된 페이지에서 동의하고 테스트 신청.
+5. Firebase 콘솔에서 consultations의 신규 문서를 직접 확인.
+프로덕션 모드의 초기 차단 규칙이 남아 있으면 permission-denied로 접수가 실패합니다.
+이 작업에서는 Firebase 콘솔에 접속하거나 규칙을 게시하지 않았습니다.
+
+저장 구조
+name, phone(숫자만), placeType, location, cameraCount,
+message(선택 문의내용, 미입력 시 빈 문자열), privacyAgreed(true),
+createdAt(serverTimestamp), status(신규).
+기존 7개 필드에 문의내용과 동의 여부를 추가했습니다.
+제공된 firestore.rules는 이 9개 필드 구조와 일치합니다.
+기존 요청서의 7개 필드 전용 규칙을 그대로 사용하면 추가 필드 때문에 저장이 거부됩니다.
+
+규칙 검토
+원래 규칙은 Firestore 규칙 문법에 맞지만 hasOnly만으로 모든 필드의 존재를 보장하지 않습니다.
+일부 항목의 타입/길이/허용값, 생성 시각을 검증하지 않는 문제도 있습니다.
+개선본은 hasAll + hasOnly와 모든 항목의 검증을 적용하고 createdAt == request.time으로 서버 타임스탬프를 요구합니다.
+다른 경로의 공개 허용 규칙이 남지 않도록 전체 규칙을 교체하세요.
+관리자는 Firebase 콘솔에서 확인합니다. 공개 페이지에는 조회 기능이 없습니다.
+
+제출 처리
+필수값/동의 검사 → 제출 잠금 → 저장 → 서버 확인 후 완료 안내와 초기화.
+오류 시 입력을 유지하고 버튼을 다시 활성화합니다.
+저장 중 중복 제출과 저장 후 60초 재신청을 제한합니다.
+브라우저 저장소를 사용할 수 없어도 접수 성공은 정상 표시됩니다.
+60초 제한과 숨김 입력은 보조 장치이며 서버 스팸 차단을 보장하지 않습니다.
+운영 후 Firebase App Check 도입을 검토하세요.
+
+로컬 검증 결과
+Edge 기반 브라우저에서 모의 Firebase 응답으로 확인했습니다.
+- 필수값과 미동의 차단, 동의 기본 해제
+- 동시 submit 2회에서도 저장 요청 1회
+- 전화번호 정규화와 문서 필드
+- 브라우저 저장소 차단 상황에서 성공 표시
+- 성공 후 reset/동의 해제/버튼 복구/재신청 제한
+- 저장 실패 후 값 유지와 버튼 복구
+- 360, 390, 768, 1440px에서 가로 넘침 없음
+- 테스트 중 미처리 JavaScript 오류 없음
+실제 SDK 네트워크 로딩, 실제 Firestore 저장, Firebase 규칙 컴파일/에뮬레이터 검증은 수행하지 않았습니다.
+실제 상담 DB에 테스트 데이터를 쓰지 않았습니다.
+
+배포
+이 폴더의 index.html, script.js, assets, vercel.json, robots.txt를 기존 Vercel 방식으로 배포할 수 있습니다.
+Firebase Hosting이나 npm 전환이 필요하지 않습니다.
+file://로 직접 열기보다는 HTTP 로컬 서버 또는 배포 주소로 확인하세요.
+
+기존 운영 항목
+카카오톡 버튼은 기존의 채널 주소 연결 안내 상태로 유지했습니다.
+개인정보처리방침 링크는 기존 수집 동의 안내를 가리키며 독립된 처리방침 페이지는 없습니다.
+이용약관 링크도 기존 연결 전 상태입니다.
+보유기간과 실제 파기 운영, 카드 이미지 조건, 기존 사업자 정보는 운영자가 최종 확인하세요.
+이메일 등 제공되지 않은 사업자 정보는 새로 만들지 않았습니다.
+기존 검색 차단(noindex) 설정, 전화번호, 가격/카드 유의사항, 소유권 이전 문구를 유지했습니다.
+
+참고 공식 문서
+https://firebase.google.com/docs/web/alt-setup
+https://firebase.google.com/docs/firestore/security/rules-fields
