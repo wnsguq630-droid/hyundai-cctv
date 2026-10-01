@@ -1,11 +1,6 @@
 배포 방법
-1. ZIP 압축을 풉니다.
-2. index.html과 assets 폴더를 함께 웹호스팅의 공개 폴더에 업로드합니다.
-3. 첫 화면이 index.html로 열리는지 확인합니다.
-
-운영 전 확인
-- 카카오톡 채널 URL 연결
-- 상담 폼의 실제 전송 기능 연결
-- 개인정보처리방침과 이용약관 페이지 연결
-- 제휴카드 명칭, 이미지, 전월 실적 및 할인 조건 최종 검수
-- Google Fonts 사용을 위한 인터넷 연결 필요
+1. 먼저 루트 FIREBASE_SETUP.txt 안내에 따라 Firestore Rules를 Firebase Console에 직접 게시합니다.
+2. 이 폴더의 index.html, script.js와 assets 폴더를 함께 기존 정적 호스팅에 배포합니다.
+3. GitHub main 반영 후 Vercel 새 배포가 Ready인지 확인합니다.
+4. 실제 운영 주소에서 테스트 신청하고 Firebase Console의 consultations 신규 문서를 확인합니다.
+기존 화면을 유지하면서 상담접수 기능만 연결했습니다.
