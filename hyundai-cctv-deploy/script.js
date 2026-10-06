@@ -80,6 +80,10 @@
     try {
       const { db, collection, addDoc, serverTimestamp } = await getFirebase();
       await addDoc(collection(db, 'consultations'), { ...payload, createdAt: serverTimestamp() });
+      // Tracking failure must not change a successfully saved consultation.
+      try {
+        if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
+      } catch { /* Ad tracking may be blocked or unavailable. */ }
       // Do not turn a confirmed write into an error when storage is blocked.
       lastSubmittedAt = Date.now();
       try { localStorage.setItem(storageKey, String(lastSubmittedAt)); } catch { /* Best-effort cooldown. */ }
