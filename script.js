@@ -50,17 +50,17 @@
     statusBox.hidden = true;
     const fields = form.elements;
     const payload = {
-      name: fields.name.value.trim(),
+      name: fields.name.value.trim() || '미입력',
       phone: fields.phone.value.replace(/[\s().-]/g, ''),
       placeType: fields.place_type.value,
       location: fields.region.value.trim(),
-      cameraCount: fields.camera_count.value.trim(),
+      cameraCount: fields.camera_count.value.trim() || '잘 모르겠어요',
       message: fields.message ? fields.message.value.trim() : Array.from(form.querySelectorAll('input[name="bundle"]:checked')).map(input => input.parentElement.textContent.trim()).join(', '),
       privacyAgreed: fields.privacy_agreed.checked,
       status: '신규'
     };
     const reject = (field, message) => { showStatus(message, 'error'); field.focus(); };
-    if (!payload.name || payload.name.length > 30) return reject(fields.name, '성함을 1~30자로 입력해 주세요.');
+    if (payload.name.length > 30) return reject(fields.name, '성함은 30자 이내로 입력해 주세요.');
     if (!/^0[0-9]{1,2}[0-9]{3,4}[0-9]{4}$/.test(payload.phone)) return reject(fields.phone, '연락처를 올바르게 입력해 주세요. 예: 010-1234-5678');
     if (!payload.location || payload.location.length > 100) return reject(fields.region, '설치 지역을 1~100자로 입력해 주세요.');
     if (!places.includes(payload.placeType)) return reject(fields.place_type, '설치 장소를 선택해 주세요.');
