@@ -55,11 +55,19 @@
       placeType: fields.place_type.value,
       location: fields.region.value.trim(),
       cameraCount: fields.camera_count.value.trim() || '잘 모르겠어요',
-      message: fields.message ? fields.message.value.trim() : Array.from(form.querySelectorAll('input[name="bundle"]:checked')).map(input => input.parentElement.textContent.trim()).join(', '),
+      message: [
+        document.getElementById('selected-case')?.textContent.trim(),
+        fields.message ? fields.message.value.trim() : Array.from(form.querySelectorAll('input[name="bundle"]:checked')).map(input => input.parentElement.textContent.trim()).join(', ')
+      ].filter(Boolean).join(' / '),
       privacyAgreed: fields.privacy_agreed.checked,
       status: '신규'
     };
-    const reject = (field, message) => { showStatus(message, 'error'); field.focus(); };
+    const reject = (field, message) => {
+      showStatus(message, 'error');
+      const detail = field.closest('details');
+      if (detail) detail.open = true;
+      field.focus();
+    };
     if (payload.name.length > 30) return reject(fields.name, '성함은 30자 이내로 입력해 주세요.');
     if (!/^0[0-9]{1,2}[0-9]{3,4}[0-9]{4}$/.test(payload.phone)) return reject(fields.phone, '연락처를 올바르게 입력해 주세요. 예: 010-1234-5678');
     if (!payload.location || payload.location.length > 100) return reject(fields.region, '설치 지역을 1~100자로 입력해 주세요.');
@@ -80,15 +88,12 @@
     try {
       const { db, collection, addDoc, serverTimestamp } = await getFirebase();
       await addDoc(collection(db, 'consultations'), { ...payload, createdAt: serverTimestamp() });
-      // Tracking failure must not change a successfully saved consultation.
-      try {
-        if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
-      } catch { /* Ad tracking may be blocked or unavailable. */ }
+      try { if (typeof window.fbq === 'function') window.fbq('track', 'Lead'); } catch {}
       // Do not turn a confirmed write into an error when storage is blocked.
       lastSubmittedAt = Date.now();
       try { localStorage.setItem(storageKey, String(lastSubmittedAt)); } catch { /* Best-effort cooldown. */ }
       form.reset();
-      showStatus('상담 신청이 완료되었습니다. 확인 후 빠르게 연락드리겠습니다.', 'success');
+      showStatus('상담 신청이 접수되었습니다. 담당자가 확인 후 연락드려 설치 구성과 비용을 안내합니다. 추가 문의는 1522-1606으로 연락해 주세요.', 'success');
     } catch (error) {
       // Do not log customer names, phone numbers, or the submitted payload.
       console.error('상담 접수 실패:', error?.code || error?.name || 'unknown');
