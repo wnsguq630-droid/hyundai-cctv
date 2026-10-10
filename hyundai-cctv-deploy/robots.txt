@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /hyundai-cctv/
+Disallow: /hyundai-cctv-deploy/
+
+Sitemap: https://www.hyundaicctvyn.co.kr/sitemap.xml
