@@ -27,6 +27,54 @@
     {
       "source": "/area/pungse/",
       "destination": "/pungse.html"
+    },
+    {
+      "source": "/area/jiksan",
+      "destination": "/area-jiksan.html"
+    },
+    {
+      "source": "/area/jiksan/",
+      "destination": "/area-jiksan.html"
+    },
+    {
+      "source": "/area/seonghwan",
+      "destination": "/area-seonghwan.html"
+    },
+    {
+      "source": "/area/seonghwan/",
+      "destination": "/area-seonghwan.html"
+    },
+    {
+      "source": "/area/tangjeong",
+      "destination": "/area-tangjeong.html"
+    },
+    {
+      "source": "/area/tangjeong/",
+      "destination": "/area-tangjeong.html"
+    },
+    {
+      "source": "/area/baebang",
+      "destination": "/area-baebang.html"
+    },
+    {
+      "source": "/area/baebang/",
+      "destination": "/area-baebang.html"
+    },
+    {
+      "source": "/area/mokcheon",
+      "destination": "/area-mokcheon.html"
+    },
+    {
+      "source": "/area/mokcheon/",
+      "destination": "/area-mokcheon.html"
+    },
+    {
+      "source": "/area/ipjang",
+      "destination": "/area-ipjang.html"
+    },
+    {
+      "source": "/area/ipjang/",
+      "destination": "/area-ipjang.html"
     }
   ]
 }
