@@ -1,0 +1,51 @@
+/* Motion layer for GitHub main 6455a111; page content/layout stays in index.html. */
+header{transition:box-shadow .25s ease,background-color .25s ease}
+header.is-scrolled{background:#fffffff7;box-shadow:0 8px 28px rgba(9,47,51,.14)}
+.motion-progress{position:absolute;left:0;right:0;bottom:0;height:3px;pointer-events:none;background:linear-gradient(90deg,var(--gold),#46d6c7);transform:scaleX(0);transform-origin:left}
+.hero{position:relative;isolation:isolate}
+.hero-grid{position:relative;z-index:1}
+.motion-enabled .hero::before{content:'';position:absolute;inset:-14%;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 72% 35%,rgba(78,231,210,.19),transparent 48%),radial-gradient(ellipse at 28% 68%,rgba(227,190,104,.14),transparent 43%);animation:security-glow 8s ease-in-out infinite;animation-play-state:paused}
+.motion-enabled .hero.motion-active::before{animation-play-state:running}
+.motion-screen{position:relative;overflow:hidden;border-radius:16px}
+.motion-screen img{display:block}
+.motion-scan{position:absolute;inset:14px;pointer-events:none;border-radius:9px;overflow:hidden;background:linear-gradient(#9bf9e8,#9bf9e8) left top/28px 2px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) left top/2px 28px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) right top/28px 2px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) right top/2px 28px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) left bottom/28px 2px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) left bottom/2px 28px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) right bottom/28px 2px no-repeat,linear-gradient(#9bf9e8,#9bf9e8) right bottom/2px 28px no-repeat}
+.motion-scan::after{content:'';position:absolute;left:0;right:0;top:-35%;height:34%;border-bottom:2px solid rgba(151,255,232,.9);background:linear-gradient(transparent,rgba(94,224,199,.2));animation:cctv-scan 3.6s linear infinite;animation-play-state:paused}
+.hero.motion-active .motion-scan::after{animation-play-state:running}
+.hero-actions .btn-primary{position:relative;overflow:hidden;isolation:isolate}
+.motion-enabled .hero-actions .btn-primary::after{content:'';position:absolute;top:-100%;bottom:-100%;left:0;width:32%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:translateX(-190%) skewX(-22deg);animation:quote-shine 5.5s ease-in-out infinite;animation-play-state:paused}
+.hero.motion-active .hero-actions .btn-primary::after{animation-play-state:running}
+.visual-badge{flex-wrap:wrap}
+.motion-toggle{margin-left:auto;min-height:34px;padding:6px 10px;border:1px solid rgba(255,255,255,.32);border-radius:7px;background:rgba(9,47,51,.22);color:#e5f4f1;font:inherit;font-size:11px;cursor:pointer;flex-shrink:0}
+.motion-toggle:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.motion-paused{scroll-behavior:auto}
+.motion-paused .hero::before,.motion-paused .hero .motion-scan::after,.motion-paused .hero .hero-actions .btn-primary::after{animation-play-state:paused!important}
+.motion-paused .motion-scan{visibility:hidden}
+.btn,.submit,.quick-menu a,.case-link,.case-quote{transition:transform .22s ease,box-shadow .22s ease,background-color .22s ease}
+.case-exterior{overflow:hidden}
+.case-exterior img,.case-monitor img{transition:transform .55s cubic-bezier(.2,.7,.3,1)}
+.case-card{transition:box-shadow .3s ease}
+.btn:focus-visible,.submit:focus-visible{outline:3px solid var(--mint);outline-offset:4px}
+.hero .btn:focus-visible{outline-color:var(--gold)}
+.btn:active,.submit:not(:disabled):active,.case-quote:active{transform:translateY(1px)}
+@media(hover:hover) and (pointer:fine){
+ .case-card:hover{box-shadow:0 20px 44px rgba(0,0,0,.22)}
+ .case-exterior:hover img{transform:scale(1.07)}
+ .case-monitor:hover img{transform:scale(1.045)}
+ .btn-primary:hover,.submit:not(:disabled):hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(9,47,51,.24)}
+ .case-quote:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(8,127,126,.2)}
+ .quick-menu a:hover{transform:translateY(-4px)}
+}
+@keyframes security-glow{0%,100%{transform:translate3d(-1.5%,0,0);opacity:.6}50%{transform:translate3d(2%,2%,0);opacity:1}}
+.motion-paused .hero-actions .btn-primary::after{visibility:hidden}
+.motion-paused .case-exterior img,.motion-paused .case-monitor img,.motion-paused .btn,.motion-paused .submit,.motion-paused .quick-menu a,.motion-paused .case-quote{transition:none;transform:none}
+.motion-paused .submit:not(:disabled):hover,.motion-paused .submit:not(:disabled):active{transform:none}
+@keyframes cctv-scan{0%{transform:translateY(0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translateY(400%);opacity:0}}
+@keyframes quote-shine{0%,38%{transform:translateX(-190%) skewX(-22deg)}62%,100%{transform:translateX(490%) skewX(-22deg)}}
+@media(max-width:640px){.motion-screen{border-radius:12px}.motion-scan{inset:10px}.motion-progress{height:2px}}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .motion-enabled .hero::before,.motion-scan,.motion-toggle,.motion-enabled .hero-actions .btn-primary::after{display:none;animation:none}
+ header,.btn,.submit,.quick-menu a,.case-card,.case-exterior img,.case-monitor img,.case-link,.case-quote{transition:none}
+ .btn:hover,.btn:active,.submit:not(:disabled):hover,.submit:not(:disabled):active,.case-quote:hover,.case-quote:active,.quick-menu a:hover,.case-exterior:hover img,.case-monitor:hover img{transform:none}
+}
+@media print{.motion-progress,.motion-scan,.motion-enabled .hero::before,.motion-enabled .hero-actions .btn-primary::after{display:none}}
