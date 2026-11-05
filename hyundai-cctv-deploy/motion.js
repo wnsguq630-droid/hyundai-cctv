@@ -61,7 +61,7 @@
 
   if (!preference.matches) {
     document.documentElement.classList.add('motion-enabled');
-    const productImage = figure?.querySelector('img');
+    const productImage = figure?.querySelector('picture, img');
     if (productImage) {
       // Scan stays inside the photograph; the 5MP caption remains below it.
       const screen = document.createElement('div');
@@ -115,19 +115,7 @@
       }
     } else if (hero) hero.classList.add('motion-active');
 
-    if (hero && hero.getBoundingClientRect().bottom > 0) {
-      const eyebrow = hero.querySelector('.eyebrow');
-      if (eyebrow) animate(eyebrow, 'up');
-      hero.querySelectorAll('.headline-line').forEach((line, index) => animate(line, 'headline', 100 + index * 150));
-      const description = hero.querySelector('.hero-desc');
-      if (description) animate(description, 'up', 300);
-      hero.querySelectorAll('.hero-points>span').forEach((chip, index) => animate(chip, 'chip', 380 + index * 100));
-      hero.querySelectorAll('.hero-price,.hero-actions,.hero-note').forEach((element, index) => animate(element, 'up', 600 + index * 70));
-      if (figure) {
-        if (figure.getBoundingClientRect().top < window.innerHeight) animate(figure, 'image', 150);
-        else if (revealObserver) revealObserver.observe(figure);
-      }
-    }
+    // Hero text and image are shown immediately (no entrance animation) so the first screen never depends on this script.
   }
 
   // Focus and anchor navigation take priority over a fade animation.
